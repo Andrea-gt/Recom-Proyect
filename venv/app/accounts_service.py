@@ -9,11 +9,13 @@ def find_user(email: str):
     user = User.match(graph, f"{email}")
     return user
 
-def create_user(username: str, email: str, password: str) -> Optional[User]:
+def create_user(username: str, name: str, age:int, email: str, password: str) -> Optional[User]:
     if find_user(email):
         return None
     user = User()
     user.username = username
+    user.name = name
+    user.age = age
     user.email = email
     user.hashed_password = hash_text(password)
     graph.create(user)
@@ -26,7 +28,7 @@ def hash_text(text: str) -> str:
 def verify_hash(hashed_text: str, plain_text: str) -> bool:
     return crypto.verify(plain_text, hashed_text)
 
-def login_user(email: str, password: str) -> Optional[User]:
+def Checklogin_user(email: str, password: str) -> Optional[User]:
     user = User.match(graph, f"{email}").first()
     if not user:
         print(f"Invalid User - {email}")
@@ -36,7 +38,7 @@ def login_user(email: str, password: str) -> Optional[User]:
         return None
     print(f"User {email} passed authentication")
     return user
-    
+
 def get_profile(usr: str) -> Optional[User]:
     # user = User.match(graph, f"{usr}").first()
     user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.company as company, x.email as email").data()
