@@ -28,7 +28,7 @@ def hash_text(text: str) -> str:
 def verify_hash(hashed_text: str, plain_text: str) -> bool:
     return crypto.verify(plain_text, hashed_text)
 
-def Checklogin_user(email: str, password: str) -> Optional[User]:
+def login_User(email: str, password: str) -> Optional[User]:
     user = User.match(graph, f"{email}").first()
     if not user:
         print(f"Invalid User - {email}")
@@ -43,3 +43,4 @@ def get_profile(usr: str) -> Optional[User]:
     # user = User.match(graph, f"{usr}").first()
     user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.company as company, x.email as email").data()
     return user_profile
+

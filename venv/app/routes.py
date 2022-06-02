@@ -1,12 +1,9 @@
 from flask import render_template
 from app import app
 from app.forms import LoginForm, RegistrationForm
-from flask import render_template, flash, redirect, url_for
-from app.accounts_service import create_user, Checklogin_user
-from flask_login import current_user,logout_user, login_required
+from flask import render_template, flash, redirect, url_for, session, request
+from app.accounts_service import create_user, login_User, get_profile
 from app.models import User
-
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -20,29 +17,40 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-
     form = LoginForm()
-    if form.validate_on_submit():
-        user = Checklogin_user(form.username.data,form.password.data)
+    if request.method == 'POST':
+        email = form.email.data
+        password = form.password.data
+        user = login_User(email, password)
         if not user:
-            flash("No hay una cuenta registrada con ese correo electronico", "error")
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
+            flash('Invalid login.')
+        else:
+            session['email'] = email
+            flash('Logged in.')
+            return redirect(url_for('index'))
+    if request.method == 'GET':
+        if "usr" in session:
+            return redirect(url_for("index"))
+        else:
+            return render_template("login.html", title='Login', form=form)
+    return render_template("login.html", title='Login', form=form)
+
+@app.route('/')
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    if "email" in session:
+        usr = session["email"]
+        session["email"] = usr
+        user_profile = get_profile(usr)
+        return render_template("index.html", user_profile=user_profile)
+    else:
+        return redirect(url_for("login"))
 
 @app.route('/logout')
 def logout():
-    logout_user()
-    return redirect(url_for('index'))
+    session.pop("email", None)
+    flash("You have successfully been logged out.", "info")
+    return redirect(url_for("login"))
 
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
-    return render_template("index.html", title='Home Page', posts=posts)
-    
 if __name__ == '__main__':
     app.run(debug=True)

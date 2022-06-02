@@ -1,7 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from py2neo.ogm import GraphObject, Property
-from app import login
+from passlib.handlers.sha2_crypt import sha512_crypt as crypto
+
 
 class User(UserMixin, GraphObject):
     __primarylabel__ = "user"
@@ -12,7 +13,3 @@ class User(UserMixin, GraphObject):
     email = Property()
     password = Property()
     hashed_password = Property()
-    
-    @login.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
