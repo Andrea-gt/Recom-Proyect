@@ -2,6 +2,8 @@ from flask import render_template
 from app import app
 from app.forms import LoginForm, RegistrationForm
 from flask import render_template, flash, redirect, url_for
+from app.accounts_service import create_user
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -20,8 +22,8 @@ def login():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        return redirect(url_for('login'))
-    return render_template('login.html', title='Sign In', form=form, username=username, password=password)
+        return render_template('login.html', title='Login', form=form, username=username, password=password)
+    return render_template('login.html', title='Login', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)

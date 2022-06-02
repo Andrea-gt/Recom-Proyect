@@ -36,6 +36,7 @@ def login_user(email: str, password: str) -> Optional[User]:
         return None
     print(f"User {email} passed authentication")
     return user
+    
 def get_profile(usr: str) -> Optional[User]:
     # user = User.match(graph, f"{usr}").first()
     user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.company as company, x.email as email").data()
