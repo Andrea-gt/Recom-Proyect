@@ -26,6 +26,34 @@
             {% endfor %}
         </p>
         <p>
+            {{ form.gender.label }}<br>
+            {{ form.gender(size=32) }}<br>
+            {% for error in form.gender.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.dpto.label }}<br>
+            {{ form.dpto(size=32) }}<br>
+            {% for error in form.dpto.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.prof.label }}<br>
+            {{ form.prof(size=32) }}<br>
+            {% for error in form.prof.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.fav.label }}<br>
+            {{ form.fav(size=32) }}<br>
+            {% for error in form.fav.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
             {{ form.email.label }}<br>
             {{ form.email(size=64) }}<br>
             {% for error in form.email.errors %}
