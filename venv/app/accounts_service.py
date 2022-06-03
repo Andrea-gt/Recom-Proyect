@@ -21,9 +21,9 @@ def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:st
     user.name = name
     user.age = age
     user.gender = gender.lower()
-    user.dpto = dpto.lower()
-    user.prof = prof.lower()
-    user.fav = fav.lower()
+    dpto = dpto.lower()
+    prof = prof.lower()
+    fav = fav.lower()
     user.email = email
     user.hashed_password = hash_text(password)
     graph.create(user)
