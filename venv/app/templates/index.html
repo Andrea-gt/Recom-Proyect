@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% for info in user_profile %}
-    <h1>¡Bienvenido, {{info.email}}!</h1>
+    <h1>¡Bienvenido, {{info.name}}!</h1>
     {% endfor %}
+    <p>Usuario similar: {{similar_users}}</p>
 {% endblock %}

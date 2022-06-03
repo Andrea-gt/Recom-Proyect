@@ -2,8 +2,12 @@ from app.db_session import db_auth
 from typing import Optional
 from passlib.handlers.sha2_crypt import sha512_crypt as crypto
 from app.models import User
+from py2neo import Graph, Node, Relationship
+from py2neo.matching import *
+
 
 graph = db_auth()
+nodes_matcher = NodeMatcher(graph)
 
 def find_user(email: str):
     user = User.match(graph, f"{email}")
@@ -44,3 +48,14 @@ def get_profile(usr: str) -> Optional[User]:
     user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.company as company, x.email as email").data()
     return user_profile
 
+def similar_users(usr: str) -> Optional[User]:
+   user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.age as age").data()
+   lookup_age = user_profile[0].get('age')
+   query = f'''
+    MATCH (x:user) 
+    WHERE x.age={lookup_age} AND x.email <> '{usr}' 
+    RETURN x.username 
+   '''
+   user_profile = graph.run(query).data()
+   similar_name = user_profile[0].get('x.username')
+   return similar_name

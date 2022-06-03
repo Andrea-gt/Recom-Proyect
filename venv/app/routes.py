@@ -2,8 +2,7 @@ from flask import render_template
 from app import app
 from app.forms import LoginForm, RegistrationForm
 from flask import render_template, flash, redirect, url_for, session, request
-from app.accounts_service import create_user, login_User, get_profile
-from app.models import User
+from app.accounts_service import create_user, login_User, get_profile, similar_users
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -42,7 +41,8 @@ def index():
         usr = session["email"]
         session["email"] = usr
         user_profile = get_profile(usr)
-        return render_template("index.html", user_profile=user_profile)
+        user_lookup = similar_users(usr)
+        return render_template("index.html", user_profile=user_profile, similar_users=user_lookup)
     else:
         return redirect(url_for("login"))
 
