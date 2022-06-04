@@ -13,7 +13,7 @@ class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     name = StringField('Nombre', validators=[DataRequired()])
     age = IntegerField('Edad', validators=[DataRequired()])
-    gender = IntegerField('Género', validators=[DataRequired()])
+    gender = StringField('Género', validators=[DataRequired()])
     dpto = StringField('Departamento', validators=[DataRequired()])
     prof = StringField('Profesión', validators=[DataRequired()])
     fav = StringField('Animal favorito', validators=[DataRequired()])

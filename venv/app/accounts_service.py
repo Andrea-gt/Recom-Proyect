@@ -41,7 +41,7 @@ def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:st
     temp_node = graph.run(f"MATCH (x:animal) WHERE x.nombre='{fav}' RETURN x.nombre as nombre").data()
     if not temp_node:
         graph.run(f"CREATE ({fav}:animal {{nombre: '{fav}'}})") # <--- ojo que esos {} andan chistosos
-    graph.run(f"MATCH (a:user), (b:animal) WHERE a.email = '{email}' AND b.nombre = '{prof}' CREATE (a)-[r:ANIMAL_FAVORITO]->(b)")
+    graph.run(f"MATCH (a:user), (b:animal) WHERE a.email = '{email}' AND b.nombre = '{fav}' CREATE (a)-[r:ANIMAL_FAVORITO]->(b)")
     return user
 
 def hash_text(text: str) -> str:
