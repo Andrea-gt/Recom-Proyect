@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, IntegerField
-from wtforms.validators import DataRequired, EqualTo, Email
+from wtforms.validators import DataRequired, EqualTo, Email, NumberRange
 
 class LoginForm(FlaskForm):
     username = StringField('Usuario', validators=[DataRequired()])
@@ -12,7 +12,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     name = StringField('Nombre', validators=[DataRequired()])
-    age = IntegerField('Edad', validators=[DataRequired()])
+    age = IntegerField('Edad', validators=[DataRequired(), NumberRange(1,130)])
     gender = StringField('Género', validators=[DataRequired()])
     dpto = StringField('Departamento', validators=[DataRequired()])
     prof = StringField('Profesión', validators=[DataRequired()])

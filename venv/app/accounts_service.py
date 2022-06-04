@@ -64,7 +64,7 @@ def login_User(email: str, password: str) -> Optional[User]:
 
 def get_profile(usr: str) -> Optional[User]:
     # user = User.match(graph, f"{usr}").first()
-    user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.company as company, x.email as email").data()
+    user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.name as name, x.email as email").data()
     return user_profile
 
 def similar_users(usr: str) -> Optional[User]:
@@ -78,3 +78,6 @@ def similar_users(usr: str) -> Optional[User]:
    user_profile = graph.run(query).data()
    similar_name = user_profile[0].get('x.username')
    return similar_name
+
+def borrar_usuario(email: str):
+    graph.run(f"MATCH (n:user) WHERE n.email = '{email}' DETACH DELETE n")

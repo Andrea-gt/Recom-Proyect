@@ -4,4 +4,5 @@
     <h1>¡Bienvenido, {{info.name}}!</h1>
     {% endfor %}
     <p>Usuario similar: {{similar_users}}</p>
+    <p><a href="{{ url_for('borrar') }}">Borrar Usuario</a></p>
 {% endblock %}

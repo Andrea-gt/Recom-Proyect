@@ -2,7 +2,7 @@ from flask import render_template
 from app import app
 from app.forms import LoginForm, RegistrationForm
 from flask import render_template, flash, redirect, url_for, session, request
-from app.accounts_service import create_user, login_User, get_profile, similar_users
+from app.accounts_service import create_user, login_User, get_profile, similar_users, borrar_usuario
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -50,6 +50,15 @@ def index():
 def logout():
     session.pop("email", None)
     flash("You have successfully been logged out.", "info")
+    return redirect(url_for("login"))
+
+@app.route('/borrar')
+def borrar():
+    usr = session["email"]
+    session["email"] = usr
+    session.pop("email", None)
+    borrar_usuario(get_profile(usr)[0].get("email"))
+    flash("Se ha borrado la cuenta y toda la información asociada a esta.", "info")
     return redirect(url_for("login"))
 
 if __name__ == '__main__':
