@@ -8,11 +8,13 @@ from app.accounts_service import create_user, login_User, get_profile, similar_u
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = create_user(form.username.data, form.name.data, form.age.data, form.gender.data, form.dpto.data, form.prof.data, form.fav.data, form.email.data, form.password.data)
+        user = create_user(form.username.data, form.name.data, form.age.data, form.gender.data, form.dpto.data, form.prof.data, form.fav.data, form.colegio.data, form.email.data, form.password.data)
         if not user:
-            flash("A user with that email already exists.")
+            flash("Ya existe una cuenta asociada a ese correo.")
             return render_template('register.html', title='Register', form=form)
-    return render_template('register.html', title='Register', form=form)
+        else:
+            flash("La cuenta se ha creado existosamente.")
+    return render_template("register.html", title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -49,7 +51,7 @@ def index():
 @app.route('/logout')
 def logout():
     session.pop("email", None)
-    flash("You have successfully been logged out.", "info")
+    flash("Se ha cerrado la sesión.", "info")
     return redirect(url_for("login"))
 
 @app.route('/borrar')

@@ -1,8 +1,55 @@
-{% extends "base.html" %}
-{% block content %}
-    {% for info in user_profile %}
-    <h1>¡Bienvenido, {{info.name}}!</h1>
-    {% endfor %}
-    <p>Usuario similar: {{similar_users}}</p>
-    <p><a href="{{ url_for('borrar') }}">Borrar Usuario</a></p>
-{% endblock %}
+<html>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+            html * {
+                font-family: 'Roboto', sans-serif; 
+            }
+            h1 {
+                color:salmon;
+            }
+        </style>
+        {% if title %}
+        <title>{{ title }} - ConnectU</title>
+        {% else %}
+        <title>ConnectU</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            <b style="color:salmon">ConnectU</b>
+            <a href="{{ url_for('login')}}">Login</a>
+            <a href="{{ url_for('register')}}">|    Registro</a>
+            <a href="{{ url_for('index')}}">|   Pagina de Inicio</a>
+            <a href="{{ url_for('logout') }}">|     Salir</a>
+            <a href="{{ url_for('borrar') }}">|     Borrar Usuario</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}
+            {% for info in user_profile %}
+                <h1>¡Bienvenido/a, {{info.name}}!</h1>
+            {% endfor %}
+            <h2>Usuarios similares:</h2>
+            <p></p>
+            {% if similar_users %}
+                {% for usuario in similar_users %}
+                    <hr>
+                    {% for llave, valor in usuario.items() %}
+                        <p><b>{{llave}}: </b>{{valor}}</p>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No hay usuarios similares en la base de datos.</p>
+            {% endif %}
+        {% endblock %}
+    </body>
+</html>

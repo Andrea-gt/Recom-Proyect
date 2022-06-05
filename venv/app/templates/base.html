@@ -1,5 +1,11 @@
 <html>
     <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+            html * {
+                font-family: 'Roboto', sans-serif; 
+            }
+        </style>
         {% if title %}
         <title>{{ title }} - ConnectU</title>
         {% else %}
@@ -8,7 +14,7 @@
     </head>
     <body>
         <div>
-            ConnectU
+            <b style="color:salmon">ConnectU</b>
             <a href="{{ url_for('login')}}">Login</a>
             <a href="{{ url_for('register')}}">|    Registro</a>
             <a href="{{ url_for('index')}}">|   Pagina de Inicio</a>

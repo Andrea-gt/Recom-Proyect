@@ -27,9 +27,9 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.remember_me() }} Remember me</p>
         <p>{{ form.submit() }}</p>
     </form>
 
-    <p>Nuevo Usuario? <a href="{{ url_for('register') }}">Presiona para Registrarte!</a></p>
+    <p><b>¿Nuevo Usuario?</b> <a href="{{ url_for('register') }}">¡Presiona para Registrarte!</a></p>
 {% endblock %}

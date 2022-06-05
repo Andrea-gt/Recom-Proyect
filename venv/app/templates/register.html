@@ -4,6 +4,7 @@
     <h1>Registro</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
+        <h3>Información de la Cuenta: </h3>
         <p>
             {{ form.username.label }}<br>
             {{ form.username(size=32) }}<br>
@@ -32,6 +33,8 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+        <hr>
+        <h3>Información Personal: </h3>
         <p>
             {{ form.dpto.label }}<br>
             {{ form.dpto(size=32) }}<br>
@@ -54,8 +57,17 @@
             {% endfor %}
         </p>
         <p>
+            {{ form.colegio.label }}<br>
+            {{ form.colegio(size=32) }}<br>
+            {% for error in form.fav.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <hr>
+        <h3>Información de Inicio de Sesión: </h3>
+        <p>
             {{ form.email.label }}<br>
-            {{ form.email(size=64) }}<br>
+            {{ form.email(size=32) }}<br>
             {% for error in form.email.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
