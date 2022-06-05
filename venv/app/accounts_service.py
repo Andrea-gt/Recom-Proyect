@@ -59,7 +59,7 @@ def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:st
         temp_node = graph.run(f"MATCH (x:multimedia) WHERE x.nombre='{entry}' RETURN x.nombre").data()
         if not temp_node:
             graph.run(f"CREATE ({entry}:multimedia {{nombre: '{entry}'}})") # <--- ojo que esos {} andan chistosos
-        graph.run(f"MATCH (a:user), (b:colegio) WHERE a.email = '{email}' AND b.nombre = '{entry}' CREATE (a)-[r:LE_GUSTA]->(b)")
+        graph.run(f"MATCH (a:user), (b:multimedia) WHERE a.email = '{email}' AND b.nombre = '{entry}' CREATE (a)-[r:LE_GUSTA]->(b)")
 
     return user
 
