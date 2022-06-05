@@ -63,6 +63,20 @@
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
+        <p>
+            {{ form.serie.label }}<br>
+            {{ form.serie(size=32) }}<br>
+            {% for error in form.fav.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.lica.label }}<br>
+            {{ form.lica(size=32) }}<br>
+            {% for error in form.fav.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
         <hr>
         <h3>Información de Inicio de Sesión: </h3>
         <p>

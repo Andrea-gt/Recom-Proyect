@@ -8,7 +8,7 @@ from app.accounts_service import create_user, login_User, get_profile, similar_u
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = create_user(form.username.data, form.name.data, form.age.data, form.gender.data, form.dpto.data, form.prof.data, form.fav.data, form.colegio.data, form.email.data, form.password.data)
+        user = create_user(form.username.data, form.name.data, form.age.data, form.gender.data, form.dpto.data, form.prof.data, form.fav.data, form.colegio.data, form.serie.data, form.lica.data, form.email.data, form.password.data)
         if not user:
             flash("Ya existe una cuenta asociada a ese correo.")
             return render_template('register.html', title='Register', form=form)

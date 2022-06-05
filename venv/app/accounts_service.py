@@ -12,7 +12,7 @@ def find_user(email: str):
     user = User.match(graph, f"{email}")
     return user
 
-def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:str, fav:str, colegio:str, email: str, password: str) -> Optional[User]:
+def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:str, fav:str, colegio:str, serie:str, lica:str, email: str, password: str) -> Optional[User]:
     if find_user(email):
         return None
     user = User()
@@ -24,33 +24,42 @@ def create_user(username: str, name: str, age:int, gender:str, dpto:str, prof:st
     prof = prof.lower().strip().replace(" ", "")
     fav = fav.lower().strip().replace(" ", "")
     colegio = colegio.lower().strip().replace(" ", "")
+    serie = serie.lower().strip().replace(" ", "")
+    lica = lica.lower().strip().replace(" ", "")
+    arr = [serie, lica]
     user.email = email
     user.hashed_password = hash_text(password)
     graph.create(user)
 
     # Departamento
-    temp_node = graph.run(f"MATCH (x:depto) WHERE x.nombre='{dpto}' RETURN x.nombre as nombre").data()
+    temp_node = graph.run(f"MATCH (x:depto) WHERE x.nombre='{dpto}' RETURN x.nombre").data()
     if not temp_node:
         graph.run(f"CREATE ({dpto}:depto {{nombre: '{dpto}'}})") # <--- ojo que esos {} andan chistosos
     graph.run(f"MATCH (a:user), (b:depto) WHERE a.email = '{email}' AND b.nombre = '{dpto}' CREATE (a)-[r:VIVE_EN]->(b)")
 
     # profesion
-    temp_node = graph.run(f"MATCH (x:profesion) WHERE x.nombre='{prof}' RETURN x.nombre as nombre").data()
+    temp_node = graph.run(f"MATCH (x:profesion) WHERE x.nombre='{prof}' RETURN x.nombre").data()
     if not temp_node:
         graph.run(f"CREATE ({prof}:profesion {{nombre: '{prof}'}})") # <--- ojo que esos {} andan chistosos
     graph.run(f"MATCH (a:user), (b:profesion) WHERE a.email = '{email}' AND b.nombre = '{prof}' CREATE (a)-[r:PROFESION]->(b)")
 
     # animal favorito :D !
-    temp_node = graph.run(f"MATCH (x:animal) WHERE x.nombre='{fav}' RETURN x.nombre as nombre").data()
+    temp_node = graph.run(f"MATCH (x:animal) WHERE x.nombre='{fav}' RETURN x.nombre").data()
     if not temp_node:
         graph.run(f"CREATE ({fav}:animal {{nombre: '{fav}'}})") # <--- ojo que esos {} andan chistosos
     graph.run(f"MATCH (a:user), (b:animal) WHERE a.email = '{email}' AND b.nombre = '{fav}' CREATE (a)-[r:ANIMAL_FAVORITO]->(b)")
 
     # Casa de estudios !!! :D 
-    temp_node = graph.run(f"MATCH (x:colegio) WHERE x.nombre='{colegio}' RETURN x.nombre as nombre").data()
+    temp_node = graph.run(f"MATCH (x:colegio) WHERE x.nombre='{colegio}' RETURN x.nombre").data()
     if not temp_node:
         graph.run(f"CREATE ({colegio}:colegio {{nombre: '{colegio}'}})") # <--- ojo que esos {} andan chistosos
     graph.run(f"MATCH (a:user), (b:colegio) WHERE a.email = '{email}' AND b.nombre = '{colegio}' CREATE (a)-[r:ESTUDIO_EN]->(b)")
+
+    for entry in arr:
+        temp_node = graph.run(f"MATCH (x:multimedia) WHERE x.nombre='{entry}' RETURN x.nombre").data()
+        if not temp_node:
+            graph.run(f"CREATE ({entry}:multimedia {{nombre: '{entry}'}})") # <--- ojo que esos {} andan chistosos
+        graph.run(f"MATCH (a:user), (b:colegio) WHERE a.email = '{email}' AND b.nombre = '{entry}' CREATE (a)-[r:LE_GUSTA]->(b)")
 
     return user
 
@@ -80,7 +89,7 @@ def similar_users(usr: str) -> Optional[User]:
    user_profile = graph.run(f"MATCH (x:user) WHERE x.email='{usr}' RETURN x.email as email").data()
    lookup_age = user_profile[0].get('email')
    query = f'''
-    match (a:user)-[:VIVE_EN|ANIMAL_FAVORITO|PROFESION|ESTUDIO_EN]->()<-[:VIVE_EN|ANIMAL_FAVORITO|PROFESION|ESTUDIO_EN]-(b:user)
+    match (a:user)-[:VIVE_EN|ANIMAL_FAVORITO|PROFESION|ESTUDIO_EN|LE_GUSTA]->()<-[:VIVE_EN|ANIMAL_FAVORITO|PROFESION|ESTUDIO_EN|LE_GUSTA]-(b:user)
     where a.email = "{lookup_age}"
     return b.username as Usuario, b.email as Email, count(*) as Similaridad
     order by Similaridad desc

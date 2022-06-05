@@ -18,6 +18,8 @@ class RegistrationForm(FlaskForm):
     prof = StringField('Profesión', validators=[DataRequired()])
     fav = StringField('Animal favorito', validators=[DataRequired()])
     colegio = StringField('Colegio donde estudió', validators=[DataRequired()])
+    serie = StringField('Serie favorita', validators=[DataRequired()])
+    lica = StringField('Película favorita', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Contraseña', validators=[DataRequired()])
     password2 = PasswordField('Repetir Contraseña', validators=[DataRequired(), EqualTo('password')])

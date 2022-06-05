@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from py2neo.ogm import GraphObject, Property
 from passlib.handlers.sha2_crypt import sha512_crypt as crypto
